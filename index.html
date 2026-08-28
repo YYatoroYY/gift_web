@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -40,9 +41,7 @@
           <p class="map-count">08 / 08</p>
         </div>
         <div class="map-wrap" id="mapWrap">
-          <div class="map-grid" aria-hidden="true"></div>
-          <svg class="world-map" id="worldMap" viewBox="0 0 1000 500" role="img" aria-label="带有旅行城市坐标的世界地图"></svg>
-          <div class="map-points" id="mapPoints" aria-label="已去过的城市"></div>
+          <div class="world-map" id="worldMap" aria-label="带有旅行城市坐标的世界地图"></div>
           <div class="map-hint">点击发光坐标<br />打开一段记忆</div>
         </div>
       </section>
@@ -68,8 +67,7 @@
   </aside>
   <div class="panel-backdrop" id="panelBackdrop"></div>
 
-  <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

@@ -9,7 +9,6 @@ const locations = [
   { city: "上海", country: "中国", date: "2024.04.22 - 04.25", coordinates: [121.4737, 31.2304], note: "故事从黄浦江边开始。第一段独自出发的路，让之后所有通往远方的念头都有了起点。", photos: ["photo-1548919973-5cef591cdbc9", "photo-1537516788369-6d330c497019", "photo-1557749038-0d3c7a3d92c1"] }
 ];
 
-const mapPoints = document.getElementById("mapPoints");
 const tripList = document.getElementById("tripList");
 const panel = document.getElementById("storyPanel");
 const closePanel = document.getElementById("closePanel");
@@ -43,35 +42,34 @@ function closeStory() {
   if (activeMarker) activeMarker.focus();
 }
 
-function renderMarkers(projection) {
-  mapPoints.innerHTML = "";
+function renderMarkers(map) {
   locations.forEach((location, index) => {
-    const [x, y] = projection(location.coordinates);
     const marker = document.createElement("button");
     marker.type = "button";
     marker.className = "place-marker";
-    marker.style.left = `${(x / 1000) * 100}%`;
-    marker.style.top = `${(y / 500) * 100}%`;
     marker.dataset.index = index;
-    marker.setAttribute("aria-label", `查看${location.city}的旅行照片`);
     marker.innerHTML = `<span></span><span class="place-label">${location.city}</span>`;
     marker.addEventListener("click", () => openStory(location, index));
-    mapPoints.appendChild(marker);
+    new maplibregl.Marker({ element: marker, anchor: "center" }).setLngLat(location.coordinates).addTo(map);
+    marker.setAttribute("aria-label", `查看${location.city}的旅行照片`);
   });
 }
 
-async function renderWorldMap() {
-  const map = document.getElementById("worldMap");
-  const response = await fetch("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json");
-  const topology = await response.json();
-  const countries = topojson.feature(topology, topology.objects.countries);
-  const projection = d3.geoNaturalEarth1().fitExtent([[16, 22], [984, 478]], countries);
-  const path = d3.geoPath(projection);
-  const mapLayer = d3.select(map);
-  mapLayer.append("rect").attr("class", "ocean-glow").attr("width", 1000).attr("height", 500);
-  mapLayer.append("path").datum(countries).attr("class", "map-country").attr("d", path);
-  mapLayer.append("path").datum(topojson.mesh(topology, topology.objects.countries, (a, b) => a !== b)).attr("class", "map-boundary").attr("d", path);
-  renderMarkers(projection);
+function renderWorldMap() {
+  const map = new maplibregl.Map({
+    container: "worldMap",
+    style: "https://tiles.openfreemap.org/styles/liberty",
+    center: [18, 20],
+    zoom: 1.15,
+    attributionControl: false,
+    maxZoom: 7,
+    minZoom: 1
+  });
+  map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right");
+  map.once("style.load", () => {
+    map.fitBounds([[-165, -52], [175, 75]], { padding: 22, duration: 0 });
+    renderMarkers(map);
+  });
 }
 
 locations.forEach((location, index) => {
@@ -83,9 +81,7 @@ locations.forEach((location, index) => {
   tripList.appendChild(card);
 });
 
-renderWorldMap().catch(() => {
-  mapPoints.innerHTML = "";
-});
+renderWorldMap();
 
 closePanel.addEventListener("click", closeStory);
 backdrop.addEventListener("click", closeStory);
