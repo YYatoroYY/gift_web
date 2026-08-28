@@ -6,7 +6,7 @@ const locations = [
   { city: "杭州", country: "中国", date: "2024 - 2026", coordinates: [120.1551, 30.2741], note: "西湖边的风带着湿润的草木气息。一路走走停停，满眼的青绿让人忘了时间。", photos: ["photo-1525625293386-3f8f99389edd", "photo-1496939376851-89342e90adcd", "photo-1565967511849-76a60a516170"] },
   { city: "日照", country: "中国", date: "2026.08", coordinates: [119.5269, 35.4164], note: "海边的清晨总是来得很早。看阳光从海面铺开，所有忙碌都暂时被海浪带走。", photos: ["photo-1583422409516-2895a77efded", "photo-1539037116277-4db20889f2d4", "photo-1533104816931-20fa691ff6ca"] },
   { city: "连云港", country: "中国", date: "2026.07", coordinates: [119.2216, 34.5967], note: "山与海在这里相遇。沿着海岸线出发，风很大，也把远方的轮廓吹得格外清楚。", photos: ["photo-1485871981521-5b1fd3805eee", "photo-1522083165195-3424ed129620", "photo-1534430480872-3498386e7856"] },
-  { city: "徐州", country: "中国", date: "2024.10.04 - 10.07", coordinates: [117.2841, 34.2058], note: "云龙湖边的夜色慢慢沉下来。熟悉的街道和偶然的晚餐，拼成了一段不想忘记的旅程。", photos: ["photo-1514395462725-fb4566210144", "photo-1545044846-351ba102b6d5", "photo-1528072164453-f4e8ef0d475a"] }
+  { city: "徐州", country: "中国", date: "2026.07", coordinates: [117.2841, 34.2058], note: "云龙湖边的夜色慢慢沉下来。熟悉的街道和偶然的晚餐，拼成了一段不想忘记的旅程。", photos: ["photo-1514395462725-fb4566210144", "photo-1545044846-351ba102b6d5", "photo-1528072164453-f4e8ef0d475a"] }
 ];
 
 const tripList = document.getElementById("tripList");
