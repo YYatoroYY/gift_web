@@ -18,7 +18,39 @@ const storyTitle = document.getElementById("storyTitle");
 const storyDate = document.getElementById("storyDate");
 const storyCopy = document.getElementById("storyCopy");
 const gallery = document.getElementById("gallery");
+const mapCameraStorageKey = "precious-memory-map-camera-v1";
 let activeMarker;
+
+function readMapCamera() {
+  try {
+    const savedCamera = JSON.parse(window.localStorage.getItem(mapCameraStorageKey));
+    if (
+      Array.isArray(savedCamera?.center) &&
+      savedCamera.center.length === 2 &&
+      savedCamera.center.every(Number.isFinite) &&
+      Number.isFinite(savedCamera.zoom)
+    ) {
+      return savedCamera;
+    }
+  } catch {
+    return null;
+  }
+  return null;
+}
+
+function saveMapCamera(map) {
+  try {
+    const center = map.getCenter();
+    window.localStorage.setItem(mapCameraStorageKey, JSON.stringify({
+      center: [center.lng, center.lat],
+      zoom: map.getZoom(),
+      bearing: map.getBearing(),
+      pitch: map.getPitch()
+    }));
+  } catch {
+    return;
+  }
+}
 
 function openStory(location, index) {
   storyIndex.textContent = `${String(index + 1).padStart(2, "0")} / ${String(locations.length).padStart(2, "0")}`;
@@ -58,11 +90,14 @@ function renderMarkers(map) {
 function renderWorldMap() {
   let userChangedCamera = false;
   let applyingInitialView = false;
+  const savedCamera = readMapCamera();
   const map = new maplibregl.Map({
     container: "worldMap",
     style: "https://tiles.openfreemap.org/styles/liberty",
-    center: [18, 20],
-    zoom: 1.15,
+    center: savedCamera?.center || [18, 20],
+    zoom: savedCamera?.zoom || 1.15,
+    bearing: savedCamera?.bearing || 0,
+    pitch: savedCamera?.pitch || 0,
     attributionControl: false,
     maxZoom: 7,
     minZoom: 1
@@ -74,12 +109,17 @@ function renderWorldMap() {
   map.on("dragstart", () => {
     userChangedCamera = true;
   });
+  map.on("moveend", () => {
+    saveMapCamera(map);
+  });
+  map.on("zoomend", () => saveMapCamera(map));
+  map.on("dragend", () => saveMapCamera(map));
   map.once("style.load", () => {
     const travelBounds = locations.reduce(
       (bounds, location) => bounds.extend(location.coordinates),
       new maplibregl.LngLatBounds(locations[0].coordinates, locations[0].coordinates)
     );
-    if (!userChangedCamera) {
+    if (!userChangedCamera && !savedCamera) {
       applyingInitialView = true;
       map.fitBounds(travelBounds, { padding: { top: 72, right: 92, bottom: 72, left: 92 }, maxZoom: 6, duration: 0 });
       applyingInitialView = false;
@@ -89,7 +129,16 @@ function renderWorldMap() {
 
   const mapWrap = document.getElementById("mapWrap");
   if (window.ResizeObserver && mapWrap) {
-    const resizeObserver = new ResizeObserver(() => map.resize());
+    const resizeObserver = new ResizeObserver(() => {
+      const camera = {
+        center: map.getCenter(),
+        zoom: map.getZoom(),
+        bearing: map.getBearing(),
+        pitch: map.getPitch()
+      };
+      map.resize();
+      map.jumpTo(camera);
+    });
     resizeObserver.observe(mapWrap);
   }
 }
