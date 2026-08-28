@@ -74,6 +74,30 @@ function closeStory() {
   if (activeMarker) activeMarker.focus();
 }
 
+function updateMarkerScale(map) {
+  const scale = Math.max(0.35, Math.min(1, 2 ** (map.getZoom() - 6)));
+  map.getContainer().querySelectorAll(".place-marker").forEach((marker) => {
+    marker.style.setProperty("--marker-scale", scale.toFixed(3));
+  });
+}
+
+function updateMarkerLabelPlacement(marker, map) {
+  const label = marker.querySelector(".place-label");
+  if (!label) return;
+
+  const markerRect = marker.getBoundingClientRect();
+  const mapRect = map.getContainer().getBoundingClientRect();
+  const labelRect = label.getBoundingClientRect();
+  const edgeGap = 10;
+  const needsLeft = labelRect.right > mapRect.right - edgeGap;
+  const needsBelow = labelRect.top < mapRect.top + edgeGap;
+  const needsAbove = labelRect.bottom > mapRect.bottom - edgeGap;
+
+  marker.classList.toggle("label-left", needsLeft);
+  marker.classList.toggle("label-below", !needsAbove && needsBelow);
+  marker.classList.toggle("label-above", needsAbove && !needsBelow);
+}
+
 function renderMarkers(map) {
   locations.forEach((location, index) => {
     const marker = document.createElement("button");
@@ -82,7 +106,10 @@ function renderMarkers(map) {
     marker.dataset.index = index;
     marker.innerHTML = `<span></span><span class="place-label">${location.city}</span>`;
     marker.addEventListener("click", () => openStory(location, index));
+    marker.addEventListener("mouseenter", () => updateMarkerLabelPlacement(marker, map));
+    marker.addEventListener("focus", () => updateMarkerLabelPlacement(marker, map));
     new maplibregl.Marker({ element: marker, anchor: "center" }).setLngLat(location.coordinates).addTo(map);
+    marker.style.setProperty("--marker-scale", Math.max(0.35, Math.min(1, 2 ** (map.getZoom() - 6))).toFixed(3));
     marker.setAttribute("aria-label", `查看${location.city}的旅行照片`);
   });
 }
@@ -114,6 +141,13 @@ function renderWorldMap() {
   });
   map.on("zoomend", () => saveMapCamera(map));
   map.on("dragend", () => saveMapCamera(map));
+  map.on("zoom", () => updateMarkerScale(map));
+  map.on("zoomend", () => updateMarkerScale(map));
+  map.on("move", () => {
+    map.getContainer().querySelectorAll(".place-marker:hover, .place-marker:focus-visible").forEach((marker) => {
+      updateMarkerLabelPlacement(marker, map);
+    });
+  });
   map.once("style.load", () => {
     const travelBounds = locations.reduce(
       (bounds, location) => bounds.extend(location.coordinates),
@@ -125,6 +159,7 @@ function renderWorldMap() {
       applyingInitialView = false;
     }
     renderMarkers(map);
+    updateMarkerScale(map);
   });
 
   const mapWrap = document.getElementById("mapWrap");
