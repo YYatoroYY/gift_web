@@ -38,7 +38,11 @@ h1 em { color: var(--teal); font-weight: 500; font-family: Georgia, "Noto Serif 
 .map-count { color: var(--ink); }
 .map-wrap { position: relative; height: min(54vw, 630px); min-height: 400px; background: var(--panel); overflow: hidden; border: 1px solid #d3d9cf; }
 .map-grid { position: absolute; inset: 0; opacity: .35; background-image: linear-gradient(to right, #bdc8bc 1px, transparent 1px), linear-gradient(to bottom, #bdc8bc 1px, transparent 1px); background-size: calc(100% / 12) calc(100% / 6); }
-.world-map { position: absolute; inset: 4% 3%; width: 94%; height: 92%; fill: #d4dbd1; stroke: #aab8a9; stroke-width: 1.3; }
+.world-map { position: absolute; inset: 0; width: 100%; height: 100%; }
+.ocean-glow { fill: #dfe8dd; }
+.map-country { fill: #b8c8b8; stroke: #7f9684; stroke-width: .65; vector-effect: non-scaling-stroke; transition: fill .25s ease; }
+.map-country:hover { fill: #93ad97; }
+.map-boundary { fill: none; stroke: #eaf0e7; stroke-width: .55; vector-effect: non-scaling-stroke; pointer-events: none; }
 .map-points { position: absolute; inset: 0; }
 .place-marker { position: absolute; transform: translate(-50%, -50%); display: grid; place-items: center; width: 33px; height: 33px; padding: 0; border-radius: 50%; border: 1px solid rgba(20,32,29,.35); background: var(--lime); color: var(--ink); transition: transform .2s, box-shadow .2s; }
 .place-marker::before { content: ""; position: absolute; inset: -7px; border: 1px solid rgba(20,32,29,.18); border-radius: inherit; animation: ripple 2.6s ease-out infinite; }
@@ -83,7 +87,7 @@ h2 { font-family: "Manrope", "Noto Sans SC", sans-serif; font-size: clamp(43px, 
   h1 { font-size: clamp(42px, 12vw, 62px); margin-top: 17px; }
   .intro-copy { margin: 31px 0 0; }
   .map-wrap { min-height: 340px; height: 72vw; }
-  .world-map { inset: 13% -17%; width: 134%; height: 74%; }
+  .world-map { inset: 0; width: 100%; height: 100%; }
   .map-hint { display: none; }
   .place-marker { width: 27px; height: 27px; }
   .trip-list { grid-template-columns: repeat(2, 1fr); margin-bottom: 45px; }

@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="一张记录旅行与会议足迹的交互式地图。" />
-  <title>航迹会议 | Travel Notes</title>
+  <meta name="description" content="一张记录旅行足迹与回忆的交互式地图。" />
+  <title>远方回忆 | Travel Notes</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -13,9 +13,9 @@
 <body>
   <div class="site-shell">
     <header class="topbar">
-      <a class="brand" href="#map" aria-label="航迹会议首页">
+      <a class="brand" href="#map" aria-label="远方回忆首页">
         <span class="brand-mark" aria-hidden="true">N</span>
-        <span>航迹会议</span>
+        <span>远方回忆</span>
       </a>
       <div class="topbar-meta">
         <span>2024 - 2026</span>
@@ -29,9 +29,9 @@
 
     <main>
       <section class="intro" aria-labelledby="page-title">
-        <p class="eyebrow">CONFERENCE FIELD NOTES</p>
+        <p class="eyebrow">TRAVEL MEMORY ATLAS</p>
         <h1 id="page-title">相聚于世界<br /><em>每一处坐标。</em></h1>
-        <p class="intro-copy">我们把会议开在不同城市，也把每一次抵达收藏进同一张地图。</p>
+        <p class="intro-copy">把每一次出发、相遇和回望，都收藏进同一张世界地图。</p>
       </section>
 
       <section class="map-section" id="map" aria-label="旅行足迹地图">
@@ -41,10 +41,7 @@
         </div>
         <div class="map-wrap" id="mapWrap">
           <div class="map-grid" aria-hidden="true"></div>
-          <svg class="world-map" viewBox="0 0 1000 500" role="img" aria-label="世界地图">
-            <path d="M82 107l18-24 40-9 27 10 29-15 38 17 7 22-25 12-15 27-48 3-28 23-31-9-9-30-26-10zm187-46 25-20 39-5 33 17 11 33-20 16-9 46-31 8-26-22-27 4-19-27 24-39zm100 118 32-15 45 9 9 28-24 18-12 48-31 23-28-29 13-46-4-16zm86-114 31-33 64-14 55 17 43-10 35 18 44-2 38 22 2 25-38 16-8 22 27 13-11 31-37-4-31 21-49-5-23 22-63-3-41-34-43 2-33-29 7-29zm254 102 34-7 40 18 20 37-9 33-28-7-22-26-43-12-9-28 17-8zm-77 57 44 8 31 25 12 47-28 20-24-13-10-42-35-20 10-25zm72 108 57 18 34 47-10 40-49 20-38-25-19-48 25-52zm128-148 37-24 30 10 22 49-18 39-42 14-27-24 7-35-20-29 11-20zm89 143 20-24 32 3 19 26-10 24-38 3-23-16z" />
-            <path d="M213 257l28 16 13 46-12 46-22 18-21-46 3-49zm41 146 25 17 7 29-11 32-19-12-5-35z" />
-          </svg>
+          <svg class="world-map" id="worldMap" viewBox="0 0 1000 500" role="img" aria-label="带有旅行城市坐标的世界地图"></svg>
           <div class="map-points" id="mapPoints" aria-label="已去过的城市"></div>
           <div class="map-hint">点击发光坐标<br />打开一段记忆</div>
         </div>
@@ -71,6 +68,8 @@
   </aside>
   <div class="panel-backdrop" id="panelBackdrop"></div>
 
+  <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
