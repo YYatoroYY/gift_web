@@ -56,6 +56,8 @@ function renderMarkers(map) {
 }
 
 function renderWorldMap() {
+  let userChangedCamera = false;
+  let applyingInitialView = false;
   const map = new maplibregl.Map({
     container: "worldMap",
     style: "https://tiles.openfreemap.org/styles/liberty",
@@ -66,14 +68,30 @@ function renderWorldMap() {
     minZoom: 1
   });
   map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right");
+  map.on("zoomstart", () => {
+    if (!applyingInitialView) userChangedCamera = true;
+  });
+  map.on("dragstart", () => {
+    userChangedCamera = true;
+  });
   map.once("style.load", () => {
     const travelBounds = locations.reduce(
       (bounds, location) => bounds.extend(location.coordinates),
       new maplibregl.LngLatBounds(locations[0].coordinates, locations[0].coordinates)
     );
-    map.fitBounds(travelBounds, { padding: { top: 72, right: 92, bottom: 72, left: 92 }, maxZoom: 6, duration: 0 });
+    if (!userChangedCamera) {
+      applyingInitialView = true;
+      map.fitBounds(travelBounds, { padding: { top: 72, right: 92, bottom: 72, left: 92 }, maxZoom: 6, duration: 0 });
+      applyingInitialView = false;
+    }
     renderMarkers(map);
   });
+
+  const mapWrap = document.getElementById("mapWrap");
+  if (window.ResizeObserver && mapWrap) {
+    const resizeObserver = new ResizeObserver(() => map.resize());
+    resizeObserver.observe(mapWrap);
+  }
 }
 
 locations.forEach((location, index) => {
