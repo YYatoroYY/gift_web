@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fredoka:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css?v=20260829-marker-anchor" />
+  <link rel="stylesheet" href="style.css?v=20260829-design-refresh" />
 </head>
 <body>
   <div class="site-shell">
@@ -18,12 +18,16 @@
         <span class="brand-mark" aria-hidden="true">N</span>
         <span>precious memory</span>
       </a>
+      <nav class="topnav" id="siteNav" aria-label="页面导航">
+        <a href="#map">MAP / 地图</a>
+        <a href="#cities">NOTES / 城市</a>
+      </nav>
       <div class="topbar-meta">
         <span>2023 - 2026</span>
         <span class="status-dot"></span>
         <span>08 cities</span>
       </div>
-      <button class="menu-button" type="button" aria-label="打开地点列表" aria-expanded="false">
+      <button class="menu-button" type="button" aria-label="打开页面导航" aria-controls="siteNav" aria-expanded="false">
         <span></span><span></span>
       </button>
     </header>
@@ -34,19 +38,35 @@
           <p class="eyebrow">PRECIOUS MEMORY</p>
           <h1 id="page-title">期待一起走遍<br /><em>每一处坐标。</em></h1>
           <p class="intro-copy">每一次出发都在期待下一次出发</p>
+          <div class="hero-stats" aria-label="旅程统计">
+            <div><strong>08</strong><span>城市坐标</span></div>
+            <div><strong>04</strong><span>年旅程</span></div>
+            <div><strong>NEXT</strong><span>下一站</span></div>
+          </div>
+          <a class="hero-link" href="#map"><span>EXPLORE THE ATLAS</span><span aria-hidden="true">-&gt;</span></a>
         </div>
         <div class="mascot" aria-hidden="true">
           <img src="assets/balloon-dogs.png" alt="" />
+          <span class="mascot-label">FIELD NOTE / 01</span>
         </div>
       </section>
 
       <section class="map-section" id="map" aria-label="旅行足迹地图">
+        <div class="section-heading map-heading">
+          <div>
+            <p class="eyebrow">THE LIVING ATLAS</p>
+            <h2>把记忆放在地图上</h2>
+          </div>
+          <p class="section-lede">从北方的清晨到海边的晚风，八个坐标把每一次出发连成一条线。</p>
+        </div>
         <div class="map-toolbar">
           <p><span class="pulse-key"></span>已留下足迹的城市</p>
-          <p class="map-count">08 / 08</p>
+          <p class="map-count"><span>08</span> / 08 <span class="map-live">LIVE</span></p>
         </div>
         <div class="map-wrap" id="mapWrap">
           <div class="world-map" id="worldMap" aria-label="带有旅行城市坐标的世界地图"></div>
+          <div class="map-corner map-corner-top"><span>TRAVEL LOG</span><strong>ASIA / 2023—26</strong></div>
+          <div class="map-corner map-corner-bottom"><span>LAST PIN</span><strong>RIZHAO · 08.2026</strong></div>
           <div class="map-hint">点击发光坐标<br />打开一段记忆</div>
         </div>
       </section>
@@ -54,9 +74,19 @@
       <section class="memory-scene" aria-label="旅行乐园插画">
         <img src="assets/park-dogs.png" alt="马尔济斯和小金毛在乐园里旅行" />
         <div class="scene-note"><span>TRAVEL PARK</span><strong>下一站，<br />也要一起出发。</strong></div>
+        <span class="scene-index">02 / 03</span>
       </section>
 
-      <section class="trip-list" id="tripList" aria-label="城市列表"></section>
+      <section class="trip-section" id="cities" aria-label="城市列表">
+        <div class="section-heading trip-heading">
+          <div>
+            <p class="eyebrow">THE CITY FILES</p>
+            <h2>八座城市，八段回望</h2>
+          </div>
+          <p class="section-lede">每一张卡片都是一个入口，打开它，继续读这段路上的风景。</p>
+        </div>
+        <div class="trip-list" id="tripList"></div>
+      </section>
     </main>
 
     <footer>
@@ -78,6 +108,6 @@
   <div class="panel-backdrop" id="panelBackdrop"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
-  <script src="script.js?v=20260829-marker-anchor"></script>
+  <script src="script.js?v=20260829-design-refresh"></script>
 </body>
 </html>

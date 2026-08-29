@@ -18,6 +18,8 @@ const storyTitle = document.getElementById("storyTitle");
 const storyDate = document.getElementById("storyDate");
 const storyCopy = document.getElementById("storyCopy");
 const gallery = document.getElementById("gallery");
+const menuButton = document.querySelector(".menu-button");
+const siteNav = document.getElementById("siteNav");
 const mapCameraStorageKey = "precious-memory-map-camera-v1";
 let activeMarker;
 
@@ -85,7 +87,6 @@ function updateMarkerLabelPlacement(marker, map) {
   const label = marker.querySelector(".place-label");
   if (!label) return;
 
-  const markerRect = marker.getBoundingClientRect();
   const mapRect = map.getContainer().getBoundingClientRect();
   const labelRect = label.getBoundingClientRect();
   const edgeGap = 10;
@@ -192,3 +193,15 @@ renderWorldMap();
 closePanel.addEventListener("click", closeStory);
 backdrop.addEventListener("click", closeStory);
 document.addEventListener("keydown", (event) => { if (event.key === "Escape" && document.body.classList.contains("panel-open")) closeStory(); });
+
+menuButton.addEventListener("click", () => {
+  const isOpen = siteNav.classList.toggle("open");
+  menuButton.setAttribute("aria-expanded", String(isOpen));
+});
+
+siteNav.querySelectorAll("a").forEach((link) => {
+  link.addEventListener("click", () => {
+    siteNav.classList.remove("open");
+    menuButton.setAttribute("aria-expanded", "false");
+  });
+});
